@@ -1,0 +1,11 @@
+server:
+  port: 4444
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: news-chain
+
+
+#mongodb+srv://monar2:monar2@cluster0.qzkyt.mongodb.net/news-chain?retryWrites=true&w=majority
