@@ -49,6 +49,26 @@ public class AuthorServices {
         }
     }
 
+    public List<AuthorDTO> getAuthorAll() throws RecordNotFoundException {
+        Optional<List<Author>> returnAuthorDTO = Optional.ofNullable(authorRepository.findAll());
+        if (returnAuthorDTO.isPresent()) {
+            Type listType = new TypeToken<List<AuthorDTO>>() {}.getType();
+            return modelMapper.map(returnAuthorDTO.get(), listType);
+        } else {
+            throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
+        }
+    }
+
+    public List<AuthorDTO> getAuthorByAuthorStatus(AuthorStatus authorStatus) throws RecordNotFoundException {
+        Optional<List<Author>> returnAuthorDTO = authorRepository.findByAuthorStatus(authorStatus);
+        if (returnAuthorDTO.isPresent()) {
+            Type listType = new TypeToken<List<AuthorDTO>>() {}.getType();
+            return modelMapper.map(returnAuthorDTO.get(), listType);
+        } else {
+            throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
+        }
+    }
+
     public AuthorDTO deleteAuthorById(Integer id) throws RecordNotFoundException {
         AuthorDTO author = getAuthorById(id);
         authorRepository.deleteById(id);
@@ -75,4 +95,5 @@ public class AuthorServices {
             throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
         }
     }
+
 }

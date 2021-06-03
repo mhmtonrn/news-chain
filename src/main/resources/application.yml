@@ -4,8 +4,32 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      #uri: mongodb://localhost:27017
+      uri: mongodb+srv://monar2:monar2@cluster0.qzkyt.mongodb.net/news-chain?retryWrites=true&w=majority
       database: news-chain
+  application:
+    name: "news-chain"
 
 
-#mongodb+srv://monar2:monar2@cluster0.qzkyt.mongodb.net/news-chain?retryWrites=true&w=majority
+
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      instance : ${java.rmi.server.hostname}":"${server.port}
+    export:
+      prometheus:
+        enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
