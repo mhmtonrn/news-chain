@@ -1,15 +1,18 @@
-package com.softengine.newschain.models.dto;
+package com.softengine.newschain.models.entity;
 
 import com.softengine.newschain.models.types.NewsStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Data
-public class NewsDTO {
+@Document("news")
+public class News {
 
+    public static final String SEQUENCE_NAME = "news";
     @Id
     private Integer id;
 
