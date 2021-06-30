@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Data
-@Document("news")
+@Document(collection = "news")
 public class News {
 
     public static final String SEQUENCE_NAME = "news";
@@ -26,5 +26,8 @@ public class News {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime publishDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime editDate;
 
 }

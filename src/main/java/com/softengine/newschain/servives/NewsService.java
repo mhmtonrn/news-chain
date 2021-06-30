@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -42,6 +43,28 @@ public class NewsService {
         Optional<News> news = newsRepository.findById(id);
         if (news.isPresent()){
             return modelMapper.map(news.get(),NewsDTO.class);
+        }else{
+            throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
+        }
+    }
+
+    public NewsDTO publishNewsAsEditor(Integer id) throws RecordNotFoundException {
+        Optional<News> news = newsRepository.findById(id);
+        if (news.isPresent()){
+            news.get().setNewsStatus(NewsStatus.PUBLISHED);
+            news.get().setPublishDate(LocalDateTime.now());
+            return modelMapper.map(newsRepository.save(news.get()),NewsDTO.class);
+        }else{
+            throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
+        }
+    }
+
+    public NewsDTO editNewsAsEditor(NewsDTO newsDTO) throws RecordNotFoundException {
+        Optional<News> news = newsRepository.findById(newsDTO.getId());
+        if (news.isPresent()){
+            news.get().setNewsStatus(NewsStatus.EDITED);
+            news.get().setEditDate(LocalDateTime.now());
+            return modelMapper.map(newsRepository.save(news.get()),NewsDTO.class);
         }else{
             throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
         }
