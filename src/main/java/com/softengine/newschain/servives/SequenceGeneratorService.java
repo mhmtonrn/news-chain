@@ -15,7 +15,7 @@ public class SequenceGeneratorService {
 
     public Integer getNext(String sequenceId) {
         Optional<DatabaseSequence> counter = sequenceGeneratorRepository.findById(sequenceId);
-        if(counter.isPresent()){
+        if(!counter.isPresent()){
             DatabaseSequence newSequesnce = new DatabaseSequence();
             newSequesnce.setId(sequenceId);
             newSequesnce.setSeq(0);
