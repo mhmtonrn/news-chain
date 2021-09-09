@@ -5,6 +5,13 @@ networks:
 
 services:
 
+  mongo:
+    image: mongo
+    restart: always
+    container_name: monar2-mongo-db
+    ports:
+      - 27217:27017
+
   news-chain:
     image: monar2/news-chain
     container_name: news-chain
