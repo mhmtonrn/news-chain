@@ -12,6 +12,8 @@ services:
     container_name: monar2-mongo-db
     networks:
       - newschain
+    ports:
+      - 27017:27017
 
   news-chain:
     image: monar2/news-chain
