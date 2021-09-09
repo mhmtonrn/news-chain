@@ -10,6 +10,8 @@ services:
     image: mongo
     restart: always
     container_name: monar2-mongo-db
+    volumes:
+    - mongodata:/data/db
     networks:
       - newschain
     ports:
