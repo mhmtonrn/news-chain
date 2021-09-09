@@ -10,6 +10,6 @@ public class Info {
 
     @GetMapping
     public String info(){
-        return "news-chain v1";
+        return "news-chain v1.1";
     }
 }
