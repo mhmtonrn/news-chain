@@ -1,7 +1,7 @@
 version: '3.1'
 
 networks:
-  - newschain
+  newschain:
 
 services:
 
@@ -9,6 +9,8 @@ services:
     image: mongo
     restart: always
     container_name: monar2-mongo-db
+    networks:
+      - newschain
     ports:
       - 27217:27017
 
@@ -16,5 +18,7 @@ services:
     image: monar2/news-chain
     container_name: news-chain
     restart: always
+    networks:
+      - newschain
     ports:
     - 8080:8080
