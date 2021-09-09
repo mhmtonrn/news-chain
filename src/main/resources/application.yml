@@ -15,7 +15,7 @@ spring:
       probability: 1
   data:
     mongodb:
-      uri: mongodb://monar2-mongo-db:27117
+      uri: mongodb://monar2-mongo-db:27217
       #uri: mongodb+srv://monar2:monar2@cluster0.qzkyt.mongodb.net/news-chain?retryWrites=true&w=majority
       database: news-chain
   application:
