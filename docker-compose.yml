@@ -16,6 +16,19 @@ services:
       - newschain
     ports:
       - 27017:27017
+  s3:
+    image: quay.io/minio/minio
+    networks:
+      - newschain
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ../storage/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    command: server /data --console-address ":9001"
 
   news-chain:
     image: monar2/news-chain

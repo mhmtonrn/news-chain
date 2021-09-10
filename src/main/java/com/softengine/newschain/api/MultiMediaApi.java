@@ -4,14 +4,21 @@ import com.softengine.newschain.models.dto.Photo;
 import com.softengine.newschain.models.dto.Video;
 import com.softengine.newschain.servives.PhotoService;
 import com.softengine.newschain.servives.VideoService;
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -23,9 +30,9 @@ public class MultiMediaApi {
     private final VideoService videoService;
 
 
-    @PostMapping("/photos/add")
-    public ResponseEntity<List<String>>addPhoto(@RequestParam("title") String title, @RequestParam("image") List<MultipartFile> image) throws IOException {
-        return ResponseEntity.ok(photoService.addPhoto(title, image));
+    @PostMapping(value = "/photos/add" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String>addPhoto( @RequestParam("file") MultipartFile image) throws Exception {
+        return ResponseEntity.ok(photoService.addPhoto(image));
     }
 
     @GetMapping("/photos/{id}")
