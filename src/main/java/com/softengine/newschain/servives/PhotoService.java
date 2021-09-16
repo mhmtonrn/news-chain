@@ -4,6 +4,7 @@ import com.softengine.newschain.models.dto.Photo;
 import com.softengine.newschain.respository.PhotoRepository;
 import io.minio.*;
 import io.minio.errors.*;
+import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,18 @@ public class PhotoService {
         return photo.getTitle();
     }
 
-    public Photo getPhoto(String id) { 
-        return photoRepo.findById(id).get(); 
+    public Photo getPhoto(String id) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
+        Photo photo = photoRepo.findById(id).get();
+        String url =
+                minioClient.getPresignedObjectUrl(
+                        GetPresignedObjectUrlArgs.builder()
+                                .method(Method.GET)
+                                .bucket(NEWS_BUCKET)
+                                .object(photo.getTitle())
+                                .expiry(2, TimeUnit.HOURS)
+                                .build());
+        System.out.println(url);
+        photo.setImageUrl(url);
+        return photo;
     }
 }

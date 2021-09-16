@@ -29,14 +29,13 @@ public class MultiMediaApi {
     private final PhotoService photoService;
     private final VideoService videoService;
 
-
     @PostMapping(value = "/photos/add" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String>addPhoto( @RequestParam("file") MultipartFile image) throws Exception {
         return ResponseEntity.ok(photoService.addPhoto(image));
     }
 
     @GetMapping("/photos/{id}")
-    public ResponseEntity<Photo> getPhoto(@PathVariable String id) {
+    public ResponseEntity<Photo> getPhoto(@PathVariable String id) throws Exception{
         Photo photo = photoService.getPhoto(id);
         //Base64.getEncoder().encodeToString(photo.getImage().getData());
         return ResponseEntity.ok(photo);

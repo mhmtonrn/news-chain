@@ -23,7 +23,7 @@ public class SwaggerConfig {
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host("monar2.jprq.live")
+                //.host("monar2.jprq.live")
                 .select() .apis(RequestHandlerSelectors.basePackage("com.softengine.newschain"))
                 .paths(regex("/api.*"))
                 .build().apiInfo(metaData());
@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 "Spring Boot REST API for Online Store",
                 "1.0",
                 "Terms of service",
-                new Contact("John Thompson", "https://springframework.guru/about/", "john@springfrmework.guru"),
+                new Contact("Mehmet ONAR", "https://springframework.guru/about/", "mhmtonar1@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0", Collections.singleton(new VendorExtension<String>() {
             @Override

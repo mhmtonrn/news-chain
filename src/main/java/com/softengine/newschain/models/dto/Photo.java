@@ -22,5 +22,5 @@ public class Photo {
 
     private String title;
         
-    private Binary image;
+    private String imageUrl;
 }

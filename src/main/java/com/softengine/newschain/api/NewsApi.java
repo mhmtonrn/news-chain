@@ -19,6 +19,7 @@ import javax.websocket.server.PathParam;
 @RequiredArgsConstructor
 public class NewsApi {
 
+
     private final NewsService newsService;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
