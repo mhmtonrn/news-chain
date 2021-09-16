@@ -58,7 +58,8 @@ public class NewsService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            news.setPhotoId(photo.getImageUrl());
+            if (photo != null)
+                news.setPhotoId(photo.getImageUrl());
         }
     }
 

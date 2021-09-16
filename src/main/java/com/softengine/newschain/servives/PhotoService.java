@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -67,18 +68,22 @@ public class PhotoService {
     }
 
     public Photo getPhoto(String id) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
-        Photo photo = photoRepo.findById(id).get();
-        String url =
-                getMinioClient().getPresignedObjectUrl(
-                        GetPresignedObjectUrlArgs.builder()
-                                .method(Method.GET)
-                                .bucket(NEWS_BUCKET)
-                                .object(photo.getTitle())
-                                .expiry(2, TimeUnit.HOURS)
-                                .build());
-        System.out.println(url);
-        photo.setImageUrl(url);
-        return photo;
+        Optional<Photo> photo = photoRepo.findById(id);
+        if (photo.isPresent()){
+            String url =
+                    getMinioClient().getPresignedObjectUrl(
+                            GetPresignedObjectUrlArgs.builder()
+                                    .method(Method.GET)
+                                    .bucket(NEWS_BUCKET)
+                                    .object(photo.get().getTitle())
+                                    .expiry(2, TimeUnit.HOURS)
+                                    .build());
+            System.out.println(url);
+            photo.get().setImageUrl(url);
+            return photo.get();
+
+        }
+        return null;
     }
 
 
