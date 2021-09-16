@@ -16,14 +16,16 @@ services:
       - newschain
     ports:
       - 27017:27017
+
   s3:
     image: quay.io/minio/minio
     container_name: monar2-minio-mm
+    restart: always
     networks:
       - newschain
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - 9000:9000
+      - 9001:9001
     volumes:
       - ../storage/minio:/data
     environment:
