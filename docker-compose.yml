@@ -11,7 +11,7 @@ services:
     restart: always
     container_name: monar2-mongo-db
     volumes:
-    - ../mongodata:/data/db
+    - c:\mongodata:/data/db
     networks:
       - newschain
     ports:

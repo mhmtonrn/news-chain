@@ -28,12 +28,11 @@ public class PhotoService {
     @Value("${minio.server.port}")
     private String minioPort;
 
+    private MinioClient minioClient;
+
 
     private static final String NEWS_BUCKET = "news-bucket";
-    private MinioClient minioClient = MinioClient.builder()
-                    .endpoint(minioServer+":"+minioPort)
-                    .credentials("minio_access_key", "minio_secret_key")
-                    .build();
+
 
     final private PhotoRepository photoRepo;
 
@@ -43,9 +42,9 @@ public class PhotoService {
         photo = photoRepo.insert(photo);
         photo.setTitle(photo.getId()+"."+file.getOriginalFilename().split("\\.")[1]);
         photo=photoRepo.save(photo);
-        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(NEWS_BUCKET).build());
+        boolean found = getMinioClient().bucketExists(BucketExistsArgs.builder().bucket(NEWS_BUCKET).build());
         if (!found) {
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(NEWS_BUCKET).build());
+            getMinioClient().makeBucket(MakeBucketArgs.builder().bucket(NEWS_BUCKET).build());
             } else {
                 System.out.println("Bucket 'asiatrip' already exists.");
             }
@@ -53,7 +52,7 @@ public class PhotoService {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
 
-        minioClient.putObject(
+        getMinioClient().putObject(
                     PutObjectArgs.builder().bucket(NEWS_BUCKET).object(photo.getTitle()).stream(
                             bais, bais.available(), -1)
                             .build());
@@ -66,7 +65,7 @@ public class PhotoService {
     public Photo getPhoto(String id) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
         Photo photo = photoRepo.findById(id).get();
         String url =
-                minioClient.getPresignedObjectUrl(
+                getMinioClient().getPresignedObjectUrl(
                         GetPresignedObjectUrlArgs.builder()
                                 .method(Method.GET)
                                 .bucket(NEWS_BUCKET)
@@ -76,5 +75,16 @@ public class PhotoService {
         System.out.println(url);
         photo.setImageUrl(url);
         return photo;
+    }
+
+
+    public MinioClient getMinioClient() {
+        if (minioClient == null){
+            minioClient= MinioClient.builder()
+                    .endpoint(minioServer+":"+minioPort)
+                    .credentials("minio_access_key", "minio_secret_key")
+                    .build();
+        }
+        return minioClient;
     }
 }
