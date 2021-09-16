@@ -6,6 +6,8 @@ import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Transactional
 public class PhotoService {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${minio.server.name}")
     private String minioServer;
@@ -79,6 +83,8 @@ public class PhotoService {
 
 
     public MinioClient getMinioClient() {
+        logger.info("connecting minio server "+ minioServer+":"+minioPort);
+
         if (minioClient == null){
             minioClient= MinioClient.builder()
                     .endpoint(minioServer+":"+minioPort)
