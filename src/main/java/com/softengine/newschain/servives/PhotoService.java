@@ -83,11 +83,11 @@ public class PhotoService {
 
 
     public MinioClient getMinioClient() {
-        logger.info("connecting minio server "+ minioServer+":"+minioPort);
+        logger.info("connecting minio server http://"+ minioServer+":"+minioPort);
 
         if (minioClient == null){
             minioClient= MinioClient.builder()
-                    .endpoint(minioServer+":"+minioPort)
+                    .endpoint("http://"+minioServer+":"+minioPort)
                     .credentials("minio_access_key", "minio_secret_key")
                     .build();
         }
