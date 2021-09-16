@@ -48,4 +48,9 @@ management:
       exposure:
         include: "*"
 
+minio:
+  server:
+    name: ${MINIO_SERVER:localhost}
+    port: ${MINIO_PORT:9000}
+
 

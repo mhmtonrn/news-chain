@@ -18,6 +18,7 @@ services:
       - 27017:27017
   s3:
     image: quay.io/minio/minio
+    container_name: monar2-minio-mm
     networks:
       - newschain
     ports:
@@ -41,3 +42,5 @@ services:
     environment:
       MONGO_DB: monar2-mongo-db
       APP_PORT: 8080
+      MINIO_SERVER: monar2-minio-mm
+      MINIO_PORT: 9000

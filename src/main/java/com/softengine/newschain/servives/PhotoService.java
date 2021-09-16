@@ -6,6 +6,7 @@ import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,9 +21,17 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Transactional
 public class PhotoService {
+
+    @Value("${minio.server.name}")
+    private String minioServer;
+
+    @Value("${minio.server.port}")
+    private String minioPort;
+
+
     private static final String NEWS_BUCKET = "news-bucket";
     private MinioClient minioClient = MinioClient.builder()
-                    .endpoint("http://127.0.0.1:9000")
+                    .endpoint(minioServer+":"+minioPort)
                     .credentials("minio_access_key", "minio_secret_key")
                     .build();
 
