@@ -34,7 +34,7 @@ public class PhotoService {
     private String minioPort;
 
     @Value("${minio.server.external.name}")
-    private static String externalServerName;
+    private String externalServerName;
 
     private MinioClient minioClient;
 
