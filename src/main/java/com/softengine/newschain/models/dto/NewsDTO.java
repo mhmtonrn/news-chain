@@ -1,5 +1,6 @@
 package com.softengine.newschain.models.dto;
 
+import com.softengine.newschain.models.types.NewsCategory;
 import com.softengine.newschain.models.types.NewsStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -20,6 +21,7 @@ public class NewsDTO {
     private Integer authorId;
     private Integer editorId;
     private NewsStatus newsStatus;
+    private NewsCategory newsCategory;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime publishDate;

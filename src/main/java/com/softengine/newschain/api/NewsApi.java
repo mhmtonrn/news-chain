@@ -3,6 +3,7 @@ package com.softengine.newschain.api;
 import com.softengine.newschain.exception.RecordNotFoundException;
 import com.softengine.newschain.models.dto.NewsDTO;
 import com.softengine.newschain.models.entity.News;
+import com.softengine.newschain.models.types.NewsCategory;
 import com.softengine.newschain.servives.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -48,4 +49,10 @@ public class NewsApi {
     public ResponseEntity<NewsDTO> publishNewsAsEditor(@PathVariable("id") Integer id) throws RecordNotFoundException {
         return ResponseEntity.ok(newsService.publishNewsAsEditor(id));
     }
+
+    @GetMapping("/getAllNewsByCategory/{newsCategory}")
+    public ResponseEntity<Page<News>> getAllNews(Pageable pageable, @PathVariable("newsCategory") NewsCategory newsCategory) throws RecordNotFoundException {
+        return ResponseEntity.ok(newsService.getAllNewsByCategory(pageable,newsCategory));
+    }
+
 }

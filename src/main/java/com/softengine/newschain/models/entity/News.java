@@ -1,5 +1,6 @@
 package com.softengine.newschain.models.entity;
 
+import com.softengine.newschain.models.types.NewsCategory;
 import com.softengine.newschain.models.types.NewsStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -23,6 +24,7 @@ public class News {
     private Integer authorId;
     private Integer editorId;
     private NewsStatus newsStatus;
+    private NewsCategory newsCategory;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime publishDate;

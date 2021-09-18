@@ -5,6 +5,7 @@ import com.softengine.newschain.exception.RecordNotFoundException;
 import com.softengine.newschain.models.dto.NewsDTO;
 import com.softengine.newschain.models.dto.Photo;
 import com.softengine.newschain.models.entity.News;
+import com.softengine.newschain.models.types.NewsCategory;
 import com.softengine.newschain.models.types.NewsStatus;
 import com.softengine.newschain.respository.NewsRepository;
 import io.minio.errors.*;
@@ -40,6 +41,18 @@ public class NewsService {
 
     public Page<News> getAllNews(Pageable pageable) throws RecordNotFoundException {
         Page<News> newses = newsRepository.findAllByOrderByPublishDateDesc(pageable);
+        if (!newses.getContent().isEmpty()){
+            for (News news:newses.getContent()){
+                fillPhoto(news);
+            }
+            return newses;
+        }else{
+            throw new RecordNotFoundException(Error.RECORD_NOT_FOUND_ERROR);
+        }
+    }
+
+    public Page<News> getAllNewsByCategory(Pageable pageable, NewsCategory category) throws RecordNotFoundException {
+        Page<News> newses = newsRepository.findByNewsCategoryOrderByPublishDateDesc(pageable,category);
         if (!newses.getContent().isEmpty()){
             for (News news:newses.getContent()){
                 fillPhoto(news);
