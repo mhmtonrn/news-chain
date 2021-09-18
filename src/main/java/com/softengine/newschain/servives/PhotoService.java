@@ -67,7 +67,7 @@ public class PhotoService {
         bais.close();
         System.out.println("my-objectname is uploaded successfully");
 
-        return photo.getTitle();
+        return photo.getId();
     }
 
     public Photo getPhoto(String id) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
