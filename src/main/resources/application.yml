@@ -53,6 +53,6 @@ minio:
     name: ${MINIO_SERVER:localhost}
     port: ${MINIO_PORT:9000}
     external:
-      name: ${MINIO_EXTERNAL_SERVER:news-media.jprq.live}
+      name: ${MINIO_EXTERNAL_SERVER:localhost:9000}
 
 
