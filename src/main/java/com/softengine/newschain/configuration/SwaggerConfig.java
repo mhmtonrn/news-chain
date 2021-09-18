@@ -23,7 +23,7 @@ public class SwaggerConfig {
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host("monar2.jprq.live")
+                //.host("monar2.jprq.live")
                 .select() .apis(RequestHandlerSelectors.basePackage("com.softengine.newschain"))
                 .paths(regex("/api.*"))
                 .build().apiInfo(metaData());
