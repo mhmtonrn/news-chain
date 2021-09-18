@@ -33,6 +33,9 @@ public class PhotoService {
     @Value("${minio.server.port}")
     private String minioPort;
 
+    @Value("${minio.server.external.name}")
+    private static String externalServerName;
+
     private MinioClient minioClient;
 
 
@@ -70,16 +73,9 @@ public class PhotoService {
     public Photo getPhoto(String id) throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, ServerException, InternalException, XmlParserException, ErrorResponseException {
         Optional<Photo> photo = photoRepo.findById(id);
         if (photo.isPresent()){
-            String url =
-                    getMinioClient().getPresignedObjectUrl(
-                            GetPresignedObjectUrlArgs.builder()
-                                    .method(Method.GET)
-                                    .bucket(NEWS_BUCKET)
-                                    .object(photo.get().getTitle())
-                                    .expiry(2, TimeUnit.HOURS)
-                                    .build());
-            System.out.println(url);
-            photo.get().setImageUrl(url);
+//            String url =  getMinioClient().getPresignedObjectUrl( GetPresignedObjectUrlArgs.builder() .method(Method.GET) .bucket(NEWS_BUCKET).object(photo.get().getTitle())   .expiry(2, TimeUnit.HOURS)     .build());
+            photo.get().setImageUrl("https://"+externalServerName+"/"+NEWS_BUCKET+"/"+photo.get().getTitle());
+            System.out.println(photo.get().getImageUrl());
             return photo.get();
 
         }
