@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +33,8 @@ public class NewsApi {
     }
 
     @GetMapping("/getAllNews")
-    public ResponseEntity<Page<News>> getAllNews(Pageable pageable) throws RecordNotFoundException {
+    public ResponseEntity<Page<News>> getAllNews(@RequestParam(required = true) int pageNumber) throws RecordNotFoundException {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 20, Sort.by(Sort.Order.desc("publishDate")));
         return ResponseEntity.ok(newsService.getAllNews(pageable));
     }
 
@@ -51,7 +55,8 @@ public class NewsApi {
     }
 
     @GetMapping("/getAllNewsByCategory/{newsCategory}")
-    public ResponseEntity<Page<News>> getAllNews(Pageable pageable, @PathVariable("newsCategory") NewsCategory newsCategory) throws RecordNotFoundException {
+    public ResponseEntity<Page<News>> getAllNews(@PathVariable("newsCategory") NewsCategory newsCategory,  @RequestParam(required = true) int pageNumber) throws RecordNotFoundException {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 20, Sort.by(Sort.Order.desc("publishDate")));
         return ResponseEntity.ok(newsService.getAllNewsByCategory(pageable,newsCategory));
     }
 
