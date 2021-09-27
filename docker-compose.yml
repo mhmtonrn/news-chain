@@ -17,6 +17,20 @@ services:
     ports:
       - 27017:27017
 
+  kong-migrations:
+    image: kong
+    container_name: kong-proxy-migration
+    command: kong migrations bootstrap
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: monar2-postgres-db
+      KONG_PG_PASSWORD: kong
+    depends_on:
+      - postgres-db
+    networks:
+      - newschain
+    restart: on-failure
+
   kong-manual:
     image: kong
     container_name: kong-proxy
@@ -47,7 +61,7 @@ services:
     networks:
       - newschain
     volumes:
-      - ../postgresdata:/var/lib/postgresql
+      - ../postgresdata:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: kong
       POSTGRES_DB: kong
