@@ -19,6 +19,7 @@ services:
 
   kong-migrations:
     image: kong
+    container_name: kong-proxy-migration
     command: kong migrations bootstrap
     environment:
       KONG_DATABASE: postgres
@@ -32,6 +33,7 @@ services:
 
   kong-manual:
     image: kong
+    container_name: kong-proxy
     environment:
       KONG_DATABASE: postgres
       KONG_PG_HOST: monar2-postgres-db
