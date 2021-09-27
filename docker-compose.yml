@@ -17,6 +17,58 @@ services:
     ports:
       - 27017:27017
 
+  kong-migrations:
+    image: kong
+    command: kong migrations bootstrap
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: monar2-postgres-db
+      KONG_PG_PASSWORD: kong
+    depends_on:
+      - postgres-db
+    networks:
+      - newschain
+    restart: on-failure
+
+  kong-manual:
+    image: kong
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: monar2-postgres-db
+      KONG_PG_PASSWORD: kong
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    depends_on:
+      - postgres-db
+    networks:
+      - newschain
+    restart: on-failure
+    ports:
+    - 8000:8000
+    - 8443:8443
+    - 8001:8001
+    - 8444:8444
+
+  postgres-db:
+    image: postgres
+    restart: always
+    container_name: monar2-postgres-db
+    networks:
+      - newschain
+    volumes:
+      - ../postgresdata:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kong
+    ports:
+    - 5432:5432
+
+
+
   s3:
     image: quay.io/minio/minio
     container_name: monar2-minio-mm
@@ -37,6 +89,9 @@ services:
     image: monar2/news-chain
     container_name: news-chain
     restart: always
+    depends_on:
+      - s3
+      - mongo
     networks:
       - newschain
     ports:
@@ -47,3 +102,5 @@ services:
       MINIO_SERVER: monar2-minio-mm
       MINIO_PORT: 9000
       MINIO_EXTERNAL_SERVER: news-media.jprq.live
+
+
