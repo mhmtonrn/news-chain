@@ -103,6 +103,6 @@ services:
       APP_PORT: 8080
       MINIO_SERVER: monar2-minio-mm
       MINIO_PORT: 9000
-      MINIO_EXTERNAL_SERVER: softengine.com/minio
+      MINIO_EXTERNAL_SERVER: monar2.jprq.live/minio
 
 
