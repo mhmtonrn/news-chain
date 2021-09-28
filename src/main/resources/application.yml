@@ -68,7 +68,7 @@ app:
   version: 1.1
   contact:
     name: Mehmet ONAR
-    website: www.softengine.com
+    website: http://www.softengine.com
     email: mhmtonar1@gmail.com
   header:
     name: Token
