@@ -67,7 +67,9 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).apiInfo(getApiInfo()).select()
+		return new Docket(DocumentationType.SWAGGER_2)
+				.host("monar2.jprq.live")
+				.apiInfo(getApiInfo()).select()
 				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).paths(PathSelectors.any())
 				.build().securitySchemes(Lists.newArrayList(apiKey()))
 				.securityContexts(Arrays.asList(securityContext()));
